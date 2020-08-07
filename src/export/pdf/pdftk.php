@@ -88,19 +88,22 @@
 		$err='';
 		$success=0;
 
-		if(is_windows()) {
-			$cmd="pdftk.exe"; //For windows
-		}else{
-			$cmd="pdftk"; //For linux and mac
+		if (stristr(PHP_OS, 'WIN')) {
+			$whereis_cmd = 'where';
+			$cmd = 'pdftk.exe'; //For windows
+		} else {
+			$whereis_cmd = 'which';
+			$cmd = 'pdftk'; //For linux and mac
 		}
-		
-		$dircmd=fix_path(dirname(__file__));
-		
-		if(file_exists("$dircmd/$cmd")) {
-		
+
+		if (!($dircmd = shell_exec("$whereis_cmd $cmd"))) {
+			$dircmd = dirname(__FILE__) . DIRECTORY_SEPARATOR . $cmd;
+		}
+
+		if (file_exists($dircmd)) {
 			$pdf_out=FPDM_CACHE."pdf_flatten.pdf";
 			
-			$cmdline="$dircmd/$cmd \"$pdf_file\" fill_form \"$fdf_file\" output \"$pdf_out\" $output_modes $security"; //direct to ouptut	
+			$cmdline="$dircmd \"$pdf_file\" fill_form \"$fdf_file\" output \"$pdf_out\" $output_modes $security"; //direct to ouptut
 
 			//echo htmlentities("$cmdline , $descriptorspec, $cwd, $env");
 
