@@ -576,10 +576,10 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 				require_once("export/pdf/pdftk.php");//Of course don't forget to bridge to PDFTK!
 
 				$tmp_file=false;
-				$pdf_file=resolve_path(fix_path(dirname(__FILE__).'/'.$this->pdf_source));      //string: full pathname to the input pdf , a form file
+				$pdf_file=realpath($this->pdf_source);      //string: full pathname to the input pdf , a form file
 				
 				if($this->fdf_source) { //FDF file provided
-					$fdf_file=resolve_path(fix_path(dirname(__FILE__).'/'.$this->fdf_source));
+					$fdf_file=realpath($this->fdf_source);
 				}else {
 				
 					$pdf_url=getUrlfromDir($pdf_file); //Normaly http scheme not local file
